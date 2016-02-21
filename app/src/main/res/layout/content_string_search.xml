@@ -29,4 +29,14 @@
         android:layout_below="@+id/textView"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="57dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text=""
+        android:id="@+id/textView2"
+        android:layout_below="@+id/button"
+        android:layout_centerHorizontal="true"
+        android:minLines="1000"
+        android:scrollIndicators="right" />
 </RelativeLayout>

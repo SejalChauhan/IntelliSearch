@@ -15,6 +15,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,6 +29,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+
 
 
 public class StringSearch extends AppCompatActivity {
@@ -47,6 +54,8 @@ public class StringSearch extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mEdit = (EditText) findViewById(R.id.editText);
+                TextView mText = (TextView) findViewById(R.id.textView2);
+                mText.setText("Retrieving...");
                 String d = mEdit.getText().toString();
                 String stringUrl = "http://pycontaxt.azurewebsites.net/";
                 Log.d("StringSearch", d);
@@ -83,7 +92,22 @@ public class StringSearch extends AppCompatActivity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
+            TextView mText = (TextView) findViewById(R.id.textView2);
+            String outString = "";
             Log.d("StringSearch", result);
+            try {
+                JSONArray obj = new JSONArray(result);
+                for (int i = 0; i < obj.length(); i++){
+                    JSONObject id = obj.getJSONObject(i);
+                    String fname = id.getString("first name");
+                    String lname = id.getString("last name");
+                    Log.d("StringSearch", fname + " " + lname);
+                    outString += fname + " " + lname + "\n";
+                }
+                mText.setText(outString);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -94,7 +118,7 @@ public class StringSearch extends AppCompatActivity {
         InputStream is = null;
         // Only display the first 500 characters of the retrieved
         // web page content.
-        int len = 500;
+        int len = 5000;
 
         try {
 
